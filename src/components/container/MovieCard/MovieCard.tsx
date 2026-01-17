@@ -5,15 +5,9 @@ import type { MovieCardProps } from './MovieCard.interface';
 
 export const MovieCard: React.FC<MovieCardProps> = ({
   movie,
-  size = 'medium',
   trendingRank = 0,
 }) => {
   const navigate = useNavigate();
-  const sizeClasses = {
-    small: 'text-xs',
-    medium: 'text-sm',
-    large: 'text-lg',
-  };
 
   const handleClick = () => {
     navigate(`/movie/${movie.id}`);
@@ -30,15 +24,15 @@ export const MovieCard: React.FC<MovieCardProps> = ({
         />
       </div>
       <h3
-        className={`font-medium ${sizeClasses[size]} line-clamp-1 group-hover:text-primary-300 transition-colors`}
+        className="text-base lg:text-lg font-semibold text-neutral-25 line-clamp-1 group-hover:text-primary-300 transition-colors"
       >
         {movie.title}
       </h3>
-      <div className={`text-base text-neutral-400`}>
+      <div className="text-sm lg:text-base text-neutral-400">
         ⭐ {movie.vote_average.toFixed(1)}/10
       </div>
       {trendingRank > 0 && (
-        <div className='absolute top-3 left-3 z-10 w-12 h-12 rounded-full bg-neutral-950/60 flex items-center justify-center text-neutral-25 text-lg font-semibold'>
+        <div className='absolute top-2 lg:top-3 left-2 lg:left-3 z-10 w-8 lg:w-12 h-8 lg:h-12 rounded-full bg-neutral-950/60 flex items-center justify-center text-neutral-25 text-lg font-semibold'>
           <span>{trendingRank}</span>
         </div>
       )}

@@ -14,8 +14,8 @@ export const NavigationButton = ({
   const isPrev = direction === 'prev';
   const Icon = isPrev ? IoChevronBack : IoChevronForward;
   const positionClass = isPrev
-    ? 'left-0 -translate-x-12'
-    : 'right-0 translate-x-12';
+    ? 'left-2 lg:left-0 lg:-translate-x-12'
+    : 'right-2 lg:right-0 lg:translate-x-12';
 
   return (
     <button

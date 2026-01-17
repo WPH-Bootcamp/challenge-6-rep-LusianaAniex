@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSearch } from './useSearch';
 import LargeMovieCard from '../../container/MovieCard/LargeMovieCard';
 import { Button } from '../../ui/Button/Button';
@@ -8,14 +8,22 @@ import { SkeletonMovieCard } from '../../ui/Skeleton';
 import { FavoriteButton } from '../../ui/Button/FavoriteButton';
 import { useFavorite } from '../favouritepage/useFavorite';
 import type { Movie } from '../../../interfaces/movie';
+import { useNavigate } from 'react-router-dom';
 
 const Searchpage: React.FC = () => {
-  const { searchResults, loading, error, hasMoreResults, loadMoreResults } =
+  const { searchResults, loading, error, hasMoreResults, loadMoreResults, query } =
     useSearch();
   const { favorites, toggleFavorite } = useFavorite();
   const [trailerKey, setTrailerKey] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [trailerLoading, setTrailerLoading] = useState(false);
+  const [searchInputValue, setSearchInputValue] = useState(query);
+  const navigate = useNavigate();
+
+  // Sync search input with URL query parameter
+  useEffect(() => {
+    setSearchInputValue(query);
+  }, [query]);
 
   const showNotFound =
     searchResults && searchResults.length === 0 && !loading && !error;
@@ -41,8 +49,56 @@ const Searchpage: React.FC = () => {
     toggleFavorite(movie);
   };
 
+  const handleBackToHome = () => {
+    navigate('/');
+  };
+
+  const handleMobileSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (searchInputValue.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchInputValue.trim())}`);
+    }
+  };
+
+  const handleClearSearch = () => {
+    setSearchInputValue('');
+  };
+
   return (
-    <div className='mx-auto p-8 mt-20 flex flex-col items-center justify-center min-h-[80vh]'>
+    <>
+      {/* Mobile Search Header - Only visible on mobile */}
+      <div className='md:hidden fixed top-0 left-0 right-0 z-50 bg-black text-white flex items-center px-4 shadow-lg h-16'>
+        <button
+          className='focus:outline-none'
+          aria-label='Back to home'
+          onClick={handleBackToHome}
+          type='button'
+        >
+          <img src='/arrow-left.svg' className='h-6 w-6 mr-2.5' />
+        </button>
+        <form onSubmit={handleMobileSearch} className='flex items-center w-full border border-neutral-800 rounded-xl py-2 px-4 h-11'>
+          <img src='/Searchlg.svg' className='h-5 w-5 mr-1' />
+          <input
+            name='search'
+            placeholder='Search Movie'
+            className='flex-1 bg-transparent outline-none text-sm text-white placeholder-neutral-500'
+            value={searchInputValue}
+            onChange={(e) => setSearchInputValue(e.target.value)}
+          />
+          {searchInputValue && (
+            <button
+              type='button'
+              className='ml-2'
+              onClick={handleClearSearch}
+              aria-label='Clear search input'
+            >
+              <img src='/Close.svg' className='h-4 w-4 opacity-60' />
+            </button>
+          )}
+        </form>
+      </div>
+
+      <div className='mx-auto p-4 md:p-8 pt-20 md:mt-20 flex flex-col items-center justify-center min-h-[80vh]'>
       {loading && (
         <div className='w-full max-w-4xl'>
           {[...Array(3)].map((_, i) => (
@@ -109,6 +165,7 @@ const Searchpage: React.FC = () => {
         videoId={trailerKey || ''}
       />
     </div>
+    </>
   );
 };
 

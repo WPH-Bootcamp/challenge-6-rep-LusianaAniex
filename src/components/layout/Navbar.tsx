@@ -41,7 +41,6 @@ export const Navbar: React.FC<NavbarProps> = () => {
 
     if (query.trim()) {
       setSearchOpen(false);
-      setSearchValue('');
       navigate(`/search?q=${encodeURIComponent(query.trim())}`);
     }
   };
@@ -114,7 +113,7 @@ export const Navbar: React.FC<NavbarProps> = () => {
                 <Input
                   name='search'
                   placeholder='Search Movie'
-                  className='hidden md:block pl-12 w-full py-2 px-4 rounded-2xl bg-neutral-950/60 border-neutral-800 focus:outline-none focus:ring-2 focus:ring-neutral-300 text-neutral-500 text-base h-14 '
+                  className='hidden md:block pl-12 w-full py-2 px-4 rounded-2xl bg-neutral-950/60 border-neutral-800 focus:outline-none focus:ring-0 text-white text-sm md:text-base h-14 '
                   value={searchValue}
                   onChange={handleInputChange}
                   ref={searchInputRef}
@@ -129,8 +128,8 @@ export const Navbar: React.FC<NavbarProps> = () => {
                   aria-label='Clear search input'
                 >
                   <img
-                    src='/Search.svg'
-                    className='h-4 w-4 opacity-25 cursor-pointer'
+                    src='/closesearch.svg'
+                    className='h-4 w-4 lg:h-5 lg:w-5  cursor-pointer'
                   />
                 </button>
               )}
@@ -166,10 +165,10 @@ export const Navbar: React.FC<NavbarProps> = () => {
       </nav>
       {menuOpen && (
         <div
-          className='fixed inset-0 z-50 bg-black/10 backdrop-blur-2xl text-white flex flex-col px-7 py-8'
+          className='fixed inset-0 z-50 bg-black/10 backdrop-blur-2xl text-white flex flex-col px-4 py-4.5'
           style={{ background: 'black' }}
         >
-          <div className='flex items-center justify-between mb-12'>
+          <div className='flex items-center justify-between h-16 mb-6'>
             <div className='flex items-center space-x-2'>
               <img src='/Logo.svg' alt='logo' className='h-7' />
             </div>
@@ -179,10 +178,10 @@ export const Navbar: React.FC<NavbarProps> = () => {
               onClick={() => setMenuOpen(false)}
               type='button'
             >
-              <img src='/Close.svg' className='h-5 w-5 mr-4' />
+              <img src='/Close.svg' className='h-4 w-4 mr-1' />
             </button>
           </div>
-          <nav className='flex flex-col gap-8 text-xl'>
+          <nav className='flex flex-col gap-8 text-base'>
             <Link
               to='/'
               onClick={(e) => {
@@ -192,14 +191,14 @@ export const Navbar: React.FC<NavbarProps> = () => {
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
               }}
-              className='text-neutral-400 hover:opacity-80 transition-all'
+              className='text-white text-base hover:opacity-80 transition-all'
             >
               Home
             </Link>
             <Link
               to='/favorites'
               onClick={() => setMenuOpen(false)}
-              className='text-neutral-400 hover:opacity-80 transition-all'
+              className='text-white text-base hover:opacity-80 transition-all'
             >
               Favorites
             </Link>
@@ -207,14 +206,27 @@ export const Navbar: React.FC<NavbarProps> = () => {
         </div>
       )}
       {searchOpen && (
-        <div className='fixed top-0 left-0 right-0 z-50 bg-black/95 text-white flex items-center px-4 py-4 shadow-lg h-22.5'>
-          <form onSubmit={handleSearch} className='flex items-center w-full'>
-            <img src='/Search.svg' className='h-6 w-6 mr-3' />
+        <div className='fixed inset-0 z-50 bg-black/10 backdrop-blur-2xl text-white flex flex-col ' style={{ background: 'black' }}>
+        <div className='fixed top-0 left-0 right-0 z-50 bg-black/95 text-white flex items-center px-4  shadow-lg h-16'>
+        <button
+          className='focus:outline-none'
+          aria-label='Back to home'
+          onClick={() => {
+            setSearchOpen(false);
+            setSearchValue('');
+            navigate('/');
+          }}
+          type='button'
+        >
+          <img src='/arrow-left.svg' className='h-6 w-6 mr-2.5' />
+        </button>
+          <form onSubmit={handleSearch} className='flex items-center w-full border border-neutral-800 rounded-xl py-2 px-4 h-11'>
+            <img src='/Searchlg.svg' className='h-5 w-5 mr-1' />
             <input
               ref={searchInputRef}
               name='search'
               placeholder='Search Movie'
-              className='flex-1 bg-transparent outline-none text-lg text-white placeholder-neutral-400'
+              className='flex-1 bg-transparent outline-none text-sm text-white placeholder-neutral-500'
               autoFocus
               value={searchValue}
               onChange={handleInputChange}
@@ -231,14 +243,8 @@ export const Navbar: React.FC<NavbarProps> = () => {
               </button>
             )}
           </form>
-          <button
-            className='ml-4 focus:outline-none'
-            aria-label='Close search'
-            onClick={() => setSearchOpen(false)}
-            type='button'
-          >
-            <img src='/Close.svg' className='h-5 w-5' />
-          </button>
+          
+        </div>
         </div>
       )}
     </>

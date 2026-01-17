@@ -49,7 +49,7 @@ export const Homepage: React.FC = () => {
       )}
 
       {/* Trending Now */}
-      <section className='px-4 sm:px-15 lg:px-25 xl:px-35 pt-0 mb-8 md:mb-12'>
+      <section className='px-4 sm:px-15 lg:px-25 xl:px-35 pt-0 mb-10 lg:mb-20'>
         <div className='flex items-center justify-between mb-4 md:mb-6'>
           <h2 className='text-display-xs md:text-display-lg font-bold pb-2'>
             Trending Now
@@ -59,18 +59,18 @@ export const Homepage: React.FC = () => {
       </section>
 
       {/* New Release */}
-      <section className='px-4 sm:px-15 lg:px-25 xl:px-35'>
+      <section className='px-4 sm:px-15 lg:px-25 xl:px-35 mb-10 lg:mb-20'>
         <div className='relative'>
           <h2 className='text-display-xs md:text-display-lg font-bold mb-4 md:mb-6 pb-2'>
             New Release
           </h2>
           <div className='grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4'>
             {newReleaseCardsToShow.map((movie) => (
-              <MovieCard key={`new-${movie.id}`} movie={movie} size='large' />
+              <MovieCard key={`new-${movie.id}`} movie={movie} />
             ))}
           </div>
           {hasMoreMovies && (
-            <div className='w-full h-[200px] md:h-[400px] absolute bottom-0 left-0 bg-gradient-to-t from-black via-black/50 to-transparent flex items-center justify-center z-50'>
+            <div className='w-full h-[200px] md:h-[400px] absolute bottom-0 left-0 bg-gradient-to-t from-black via-black/50 to-transparent flex items-center justify-center z-10'>
               <Button
                 variant='secondary'
                 size='sm'

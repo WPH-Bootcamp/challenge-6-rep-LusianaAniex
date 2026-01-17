@@ -69,7 +69,7 @@ export const Carousel: React.FC<CarouselProps> = ({ movies }) => {
               className='flex-shrink-0'
               style={{ width: cardWidth }}
             >
-              <MovieCard movie={movie} size='large' trendingRank={idx + 1} />
+              <MovieCard movie={movie} trendingRank={idx + 1} />
             </div>
           ))}
         </div>

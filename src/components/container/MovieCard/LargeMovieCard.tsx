@@ -27,7 +27,7 @@ const LargeMovieCard: React.FC<LargeMovieCardProps> = ({
   favoriteButton,
 }) => {
   return (
-    <div className='relative flex flex-col md:flex-row bg-black rounded-2xl p-4 md:p-8 mb-4 md:mb-8 shadow-lg items-start w-full max-w-4xl mx-auto border border-neutral-900'>
+    <div className='relative flex flex-col md:flex-row bg-black rounded-2xl p-4 md:p-8 mb-4 md:mb-8 shadow-lg items-start w-full max-w-4xl mx-auto'>
       {/* Favorite Button - Top Right (Desktop only) */}
       {favoriteButton && (
         <div className='hidden lg:block absolute top-6 right-6 z-10'>
