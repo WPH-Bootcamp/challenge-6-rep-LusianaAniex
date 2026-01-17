@@ -11,7 +11,7 @@ export const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const sizeClasses = {
-    sm: 'px-4 py-1.5 text-sm font-semibold h-11 ',
+    sm: 'px-4 py-1.5 text-sm font-semibold h-11 md:h-13',
     md: 'px-6 py-2 text-base h-13',
     lg: 'px-8 py-3 text-lg h-16',
     icon: 'p-2 h-10 w-10',
@@ -26,7 +26,7 @@ export const Button: React.FC<ButtonProps> = ({
   };
 
   const baseClasses =
-    'rounded-full font-semibold transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900';
+    'rounded-full font-semibold transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 focus:outline-none focus:ring-2';
 
   // Add disabled state
   const disabledClasses = disabled

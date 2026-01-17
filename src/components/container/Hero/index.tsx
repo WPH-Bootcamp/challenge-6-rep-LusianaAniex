@@ -7,7 +7,7 @@ import {
 } from '../../../services/movies/services';
 import { IoPlayCircle } from 'react-icons/io5';
 import { useState } from 'react';
-import { VideoModal } from '../../ui/VideoModal';
+import { VideoModal } from '../../ui/VideoModal.tsx';
 
 interface HeroSectionProps {
   movie: Movie;
@@ -46,7 +46,7 @@ export const HeroSection = ({
   };
 
   return (
-    <div className='relative w-full mb-12 '>
+    <div className='relative w-full md:mb-12'>
       <div className='relative w-full h-160 md:h-[32rem] lg:h-[50rem]'>
         <div className='absolute inset-0 bottom-0 bg-gradient-to-t from-black via-black/70 md:via-black/50 to-transparent z-10' />
         <img
@@ -55,7 +55,7 @@ export const HeroSection = ({
           className='w-full h-96 md:h-[32rem] lg:h-[50rem] object-cover object-center'
           loading='lazy'
         />
-        <div className='absolute inset-0 z-20 w-full flex flex-col justify-end pb-12 md:pb-16 lg:pb-20 px-4 md:px-15 lg:px-25 xl:px-35 text-neutral-25 max-w-4xl '>
+        <div className='absolute inset-0 z-20 w-full flex flex-col justify-end pb-8 lg:justify-start lg:pt-[298px] px-4 md:px-15 lg:px-25 xl:px-35 text-neutral-25 max-w-4xl'>
           <h1 className='text-display-xs md:text-display-2xl font-bold mb-1.5 md:mb-4 drop-shadow-lg leading-tight'>
             {movie.title}
           </h1>
@@ -66,12 +66,12 @@ export const HeroSection = ({
             <Button
               variant='primary'
               size='sm'
-              icon={<IoPlayCircle size={24} />}
               onClick={handleWatchTrailer}
               disabled={isLoading}
               className='w-full md:w-1/2 md:max-w-57.5'
             >
-              {isLoading ? 'Loading...' : 'Watch Trailer'}
+              {isLoading ? 'Loading...' : 'Watch Trailer'}{' '}
+              <IoPlayCircle size={24} />
             </Button>
             <Button
               variant='secondary'

@@ -71,7 +71,11 @@ export const Navbar: React.FC<NavbarProps> = () => {
               to='/'
               className='flex space-x-2 items-center hover:opacity-80 transition-opacity'
             >
-              <img src='/Logo.svg' alt='logo' className='h-7 md:scale-110' />
+              <img
+                src='/Logo.svg'
+                alt='logo'
+                className='h-[25px] lg:h-10 transition-all duration-300 ease-in-out'
+              />
             </Link>
             <div className='text-base hidden md:flex space-x-12 text-shadow-lg'>
               <Link

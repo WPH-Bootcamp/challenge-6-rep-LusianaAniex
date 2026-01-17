@@ -7,7 +7,7 @@ import { getMovieTrailer } from '../../../services/movies/services';
 import { useNavigate } from 'react-router-dom';
 import type { Movie } from '../../../interfaces/movie';
 import { FavoriteButton } from '../../ui/Button/FavoriteButton';
-import { SkeletonMovieCard } from '../../ui/Skeleton';
+import { SkeletonFavoritePage } from '../../ui/Skeleton';
 
 const Favoritepage: React.FC = () => {
   const { favorites, loading, toggleFavorite } = useFavorite();
@@ -34,18 +34,7 @@ const Favoritepage: React.FC = () => {
   };
 
   if (loading) {
-    return (
-      <div className='px-4 sm:px-15 lg:px-25 xl:px-35 mt-30 min-h-[80vh]'>
-        <div className='h-10 bg-gray-700 rounded w-48 mb-8 animate-pulse' />
-        <div className='w-full max-w-4xl mx-auto'>
-          {[...Array(3)].map((_, i) => (
-            <div key={i} className='mb-8'>
-              <SkeletonMovieCard size='large' />
-            </div>
-          ))}
-        </div>
-      </div>
-    );
+    return <SkeletonFavoritePage />;
   }
 
   return (

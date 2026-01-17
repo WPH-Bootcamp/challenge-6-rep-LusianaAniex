@@ -6,13 +6,14 @@ export interface Movie {
   backdrop_path: string | null;
   release_date: string;
   vote_average: number;
+  genre_ids?: number[];
   runtime?: number;
   genres?: {
-    // Add genres for detail page
     id: number;
     name: string;
   }[];
   tagline?: string;
+  trailer_key?: string;
 }
 
 export interface MovieDetails extends Movie {
@@ -23,12 +24,14 @@ export interface MovieDetails extends Movie {
   }[];
   tagline: string;
 }
+
 export interface ApiResponse {
   results: Movie[];
   total_pages: number;
   total_results: number;
   page: number;
 }
+
 export interface MovieDetailData {
   movie: MovieDetails | null;
   trailerKey: string | null;
@@ -36,18 +39,6 @@ export interface MovieDetailData {
   images: unknown;
   isLoading: boolean;
   error: string | null;
-}
-
-export interface Movie {
-  id: number;
-  title: string;
-  poster_path: string | null;
-  backdrop_path: string | null;
-  overview: string;
-  release_date: string;
-  vote_average: number;
-  genre_ids?: number[];
-  trailer_key?: string;
 }
 
 interface PaginatedResponse<T> {

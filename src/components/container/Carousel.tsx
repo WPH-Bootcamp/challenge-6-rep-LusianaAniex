@@ -1,40 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import MovieCard from '../container/MovieCard/index';
 import { NavigationButton } from '../ui/Button/NavigationButton';
 import type { Movie } from '../../interfaces/movie';
+import { getColumnCount, BREAKPOINTS } from '../../constants/breakpoints';
+import { APP_CONSTANTS, GAP_SIZES } from '../../constants/app';
 
 interface CarouselProps {
   movies: Movie[];
 }
 
-const getVisibleCount = () => {
-  if (typeof window === 'undefined') return 5;
-  const width = window.innerWidth;
-  if (width < 768) return 2;
-  if (width < 1024) return 3;
-  if (width < 1280) return 4;
-  return 5;
-};
-
 export const Carousel: React.FC<CarouselProps> = ({ movies }) => {
-  const [visibleCount, setVisibleCount] = useState(getVisibleCount());
+  const [visibleCount, setVisibleCount] = useState(getColumnCount(window.innerWidth));
+  const [gap, setGap] = useState<number>(GAP_SIZES.BASE);
   const [startIdx, setStartIdx] = useState(0);
-  const total = Math.min(movies.length, 20);
+  
+  const total = Math.min(movies.length, APP_CONSTANTS.MAX_TRENDING_ITEMS);
   const items = movies.slice(0, total);
 
-  const gapBase = 12;
-  const gapMd = 16;
-  const [gap, setGap] = useState(gapBase);
-  useEffect(() => {
-    function updateGap() {
-      const width = window.innerWidth;
-      if (width >= 768) setGap(gapMd);
-      else setGap(gapBase);
-    }
-    updateGap();
-    window.addEventListener('resize', updateGap);
-    return () => window.removeEventListener('resize', updateGap);
-  }, []);
   const totalGap = gap * (visibleCount - 1);
   const cardWidth = `calc((100% - ${totalGap}px) / ${visibleCount})`;
 
@@ -44,24 +26,30 @@ export const Carousel: React.FC<CarouselProps> = ({ movies }) => {
   const goPrev = () => {
     setStartIdx((prev) => (prev === 0 ? maxStartIdx : prev - 1));
   };
-  const goNext = React.useCallback(() => {
+  
+  const goNext = useCallback(() => {
     setStartIdx((prev) => (prev === maxStartIdx ? 0 : prev + 1));
   }, [maxStartIdx]);
 
+  // Auto-scroll effect
   useEffect(() => {
     const interval = setInterval(() => {
       goNext();
-    }, 3000);
+    }, APP_CONSTANTS.CAROUSEL_AUTO_SCROLL_INTERVAL);
     return () => clearInterval(interval);
   }, [goNext]);
 
+  // Consolidated resize listener for both visibleCount and gap
   useEffect(() => {
-    function updateVisibleCount() {
-      setVisibleCount(getVisibleCount());
+    function handleResize() {
+      const width = window.innerWidth;
+      setVisibleCount(getColumnCount(width));
+      setGap(width >= BREAKPOINTS.MD ? GAP_SIZES.MD : GAP_SIZES.BASE);
     }
-    updateVisibleCount();
-    window.addEventListener('resize', updateVisibleCount);
-    return () => window.removeEventListener('resize', updateVisibleCount);
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const translateX = `-${safeStartIdx * (100 / visibleCount)}%`;

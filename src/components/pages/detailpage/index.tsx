@@ -9,27 +9,10 @@ import { useFavorite } from '../favouritepage/useFavorite';
 import { toast } from 'react-hot-toast';
 import { AppToaster } from '../../ui/Toast/Toaster';
 import { SkeletonDetail } from '../../ui/Skeleton';
-
-const MONTHS = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-];
-
-function formatDate(dateStr: string) {
-  const d = new Date(dateStr);
-  if (isNaN(d.getTime())) return dateStr;
-  return `${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
-}
+import { FavoriteButton } from '../../ui/Button/FavoriteButton';
+import { formatDate } from '../../../utils/dateUtils';
+import { getGenreNames } from '../../../utils/genreUtils';
+import { APP_CONSTANTS } from '../../../constants/app';
 
 const MovieDetailpage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
@@ -41,33 +24,16 @@ const MovieDetailpage: React.FC = () => {
     return <div className='text-center py-20 text-red-500'>{error}</div>;
   if (!movie) return <div className='text-center py-20'>Movie not found.</div>;
 
-  type MovieWithGenres = typeof movie & {
-    genres?: { id: number; name: string }[];
-  };
-  let genreNames: string[] = [];
-  if (movie) {
-    if (
-      Array.isArray((movie as MovieWithGenres).genres) &&
-      (movie as MovieWithGenres).genres!.length > 0
-    ) {
-      genreNames = (movie as MovieWithGenres).genres!.map((g) => g.name);
-    } else if (movie.genre_ids) {
-      genreNames = movie.genre_ids
-        .map((id) => genres.find((g) => g.id === id)?.name || '')
-        .filter(Boolean);
-    }
-  }
-
-  const ageLimit = 13;
+  const genreNames = getGenreNames(movie, genres);
 
   const handleWatchTrailer = () => {
     if (trailerKey) setIsModalOpen(true);
   };
-  const handleFavoriteClick = () => {
-    const wasFavorite = isMovieFavorite(movie.id);
-    toggleFavorite(movie);
+  const handleFavoriteClick = (favoriteMovie: typeof movie) => {
+    const wasFavorite = isMovieFavorite(favoriteMovie.id);
+    toggleFavorite(favoriteMovie);
     toast(
-      `${movie.title} ${wasFavorite ? 'removed from' : 'added to'} favorites`
+      `${favoriteMovie.title} ${wasFavorite ? 'removed from' : 'added to'} favorites`
     );
   };
   return (
@@ -101,15 +67,15 @@ const MovieDetailpage: React.FC = () => {
           {/* Content Section */}
           <div className='md:col-span-2'>
             {/* Title */}
-            <div className='mb-6'>
-              <h1 className='text-2xl sm:text-4xl font-bold'>{movie.title}</h1>
-              <div className='flex items-center gap-2 text-lg font-medium mt-4'>
+            <div className='mb-6 lg:mb-9'>
+              <h1 className='text-xl md:text-display-xl font-bold'>{movie.title}</h1>
+              <div className='flex items-center gap-2 text-lg font-medium mt-1 lg:mt-4'>
                 <img
                   src='/icon-calendar.svg'
                   alt='calendar'
-                  className='w-6 h-6'
+                  className='w-5 h-5 lg:w-6 lg:h-6'
                 />
-                <span>{formatDate(movie.release_date)}</span>
+                <span className='text-sm lg:text-base'>{formatDate(movie.release_date)}</span>
               </div>
             </div>
           </div>
@@ -128,29 +94,12 @@ const MovieDetailpage: React.FC = () => {
                 >
                   Watch Trailer <IoPlayCircle size={24} />
                 </Button>
-                <button
-                  aria-label={
-                    isMovieFavorite(movie.id)
-                      ? 'Remove from favorites'
-                      : 'Add to favorites'
-                  }
-                  className={`w-14 h-14 flex items-center justify-center rounded-full border-1 border-neutral-800 bg-neutral-950/60 shadow-lg transition-colors duration-200 ${
-                    isMovieFavorite(movie.id)
-                      ? 'bg-red-500/20 border-red-500'
-                      : ''
-                  }`}
-                  onClick={handleFavoriteClick}
-                >
-                  <img
-                    src={
-                      isMovieFavorite(movie.id)
-                        ? '/icon-fav-on.svg'
-                        : '/icon-fav-off.svg'
-                    }
-                    alt='favorite'
-                    className='w-6 h-6 cursor-pointer'
-                  />
-                </button>
+                <FavoriteButton
+                  movie={movie}
+                  isFavorite={isMovieFavorite(movie.id)}
+                  onToggleFavorite={handleFavoriteClick}
+                  className="shadow-lg"
+                />
               </div>
             </div>
 
@@ -186,7 +135,7 @@ const MovieDetailpage: React.FC = () => {
                 />
                 <div className='text-neutral-300 text-base'>Age Limit</div>
                 <div className='text-xl font-semibold mt-1 text-center'>
-                  {ageLimit}
+                  {APP_CONSTANTS.DEFAULT_AGE_LIMIT}
                 </div>
               </div>
             </div>
@@ -205,18 +154,18 @@ const MovieDetailpage: React.FC = () => {
         <div className='mt-12'>
           <h2 className='text-2xl md:text-3xl font-bold mb-6'>Cast & Crew</h2>
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-            {cast.map((member) => (
+            {cast.map((member, index) => (
               <CastCard
-                key={`${member.id}-${member.character}`}
+                key={`cast-${member.id}-${member.character}-${index}`}
                 {...member}
                 name={member.name}
                 role={member.character}
                 profilePath={member.profile_path}
               />
             ))}
-            {crew.map((member) => (
+            {crew.map((member, index) => (
               <CastCard
-                key={member.id}
+                key={`crew-${member.id}-${member.job}-${index}`}
                 name={member.name}
                 role={member.job}
                 profilePath={member.profile_path}

@@ -16,7 +16,6 @@ export const searchMovies = (
   query: string,
   page: number = 1
 ): Promise<MovieListResponse> => {
-  console.log('Searching movies with query:', query, 'page:', page);
   return tmdbApi
     .get(TMDB_ENDPOINTS.MOVIES.SEARCH, {
       params: {
@@ -25,10 +24,7 @@ export const searchMovies = (
         include_adult: false,
       },
     })
-    .then(({ data }) => {
-      console.log('Search response:', data);
-      return data;
-    })
+    .then(({ data }) => data)
     .catch((error) => {
       console.error('Error searching movies:', error);
       throw error;

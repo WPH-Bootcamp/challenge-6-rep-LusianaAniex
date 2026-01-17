@@ -1,5 +1,4 @@
 import React from 'react';
-import { Button } from '../../ui/Button/Button';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import type { Movie } from '../../../interfaces/movie';
 
@@ -19,13 +18,13 @@ export const FavoriteButton: React.FC<FavoriteButtonProps> = ({
   return (
     <button
       onClick={() => onToggleFavorite(movie)}
-      className={`w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full border border-neutral-800 bg-neutral-950/60 hover:bg-neutral-800 transition-colors duration-200 ${className}`}
+      className={`w-11 h-11 lg:w-13 lg:h-13 flex-shrink-0 flex items-center justify-center rounded-full border border-neutral-900 bg-neutral-950/60 hover: transition-colors duration-200 focus:outline-none focus:ring-0 ${className}`}
       aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
     >
       {isFavorite ? (
-        <FaHeart size={20} className='text-red-500' />
+        <FaHeart className='text-red-500 w-[18px] h-[18px] lg:w-[20px] lg:h-[20px]' />
       ) : (
-        <FaRegHeart size={20} className='text-neutral-400 hover:text-red-500' />
+        <FaRegHeart className='text-neutral-900 w-[18px] h-[18px] lg:w-[20px] lg:h-[20px]' />
       )}
     </button>
   );

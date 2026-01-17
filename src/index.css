@@ -32,7 +32,7 @@
   --text-display-sm: 1.75rem;
   --text-display-sm--line-height: 2.375rem;
 
-  --text-display-xs: 2.4rem;
+  --text-display-xs: 1.5rem;
   --text-display-xs--line-height: 2.25rem;
 
   --text-text-xl: 1.25rem;
@@ -117,10 +117,7 @@ body {
   min-height: 100vh;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
+/* h1 default styles removed to allow Tailwind utilities to take precedence */
 
 @media (prefers-color-scheme: light) {
   :root {
