@@ -18,6 +18,9 @@ dist-ssr
 .env.test.local
 .env.production.local
 
+# Evaluation checklist
+CHECK.md
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

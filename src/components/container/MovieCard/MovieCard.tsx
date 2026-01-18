@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getImageUrl } from '../../../services/movies/services';
+import { useQueryClient } from '@tanstack/react-query';
+import { getImageUrl, getMovieDetails } from '../../../services/movies/services';
 import type { MovieCardProps } from './MovieCard.interface';
 
 export const MovieCard: React.FC<MovieCardProps> = ({
@@ -8,13 +9,30 @@ export const MovieCard: React.FC<MovieCardProps> = ({
   trendingRank = 0,
 }) => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const handleClick = () => {
     navigate(`/movie/${movie.id}`);
   };
 
+  /**
+   * Prefetch movie details on hover for better perceived performance
+   * When user hovers over a card, data loads in background
+   */
+  const handleMouseEnter = () => {
+    queryClient.prefetchQuery({
+      queryKey: ['movie', movie.id],
+      queryFn: () => getMovieDetails(movie.id),
+      staleTime: 10 * 60 * 1000, // 10 minutes
+    });
+  };
+
   return (
-    <div className='relative group cursor-pointer' onClick={handleClick}>
+    <div 
+      className='relative group cursor-pointer' 
+      onClick={handleClick}
+      onMouseEnter={handleMouseEnter}
+    >
       <div className='relative overflow-hidden rounded-lg aspect-[2/3] mb-2'>
         <img
           src={getImageUrl(movie.poster_path)}

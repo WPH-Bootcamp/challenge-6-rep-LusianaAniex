@@ -65,7 +65,7 @@ const Favoritepage: React.FC = () => {
           </Button>
         </div>
       ) : (
-        <div className='w-full flex flex-col items-center'>
+        <div className='w-full flex flex-col items-center lg:items-start'>
           {favorites.slice(0, visibleCount).map((movie) => (
             <LargeMovieCard
               key={movie.id}

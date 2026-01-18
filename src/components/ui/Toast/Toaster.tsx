@@ -45,7 +45,7 @@ export const AppToaster = () => {
           <div
             className={`
               ${t.visible ? 'animate-enter' : 'animate-leave'}
-              bg-black/60 backdrop-blur-md rounded-md
+              bg-black/60 backdrop-blur-md rounded-2xl
               flex items-center justify-center gap-3 px-4 py-3 shadow-lg
               border border-white/10 translate-y-30
             `}

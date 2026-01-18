@@ -1,10 +1,11 @@
-import { Routes, Route } from 'react-router-dom'; //
+import { Routes, Route } from 'react-router-dom';
 import { Suspense, lazy } from 'react';
 import LoadingSpinner from './components/ui/Loading';
 import { MainLayout } from './components/layout/MainLayout';
 import { ErrorBoundary } from './components/ui/ErrorBoundary';
 
-// Lazy load pages
+// Code Splitting: Lazy load pages to reduce initial bundle size
+// Each route is loaded on-demand when user navigates to it
 const HomePage = lazy(() => import('./components/pages/homepage/Homepage'));
 const MovieDetailPage = lazy(() => import('./components/pages/detailpage'));
 const Searchpage = lazy(() => import('./components/pages/searchpage'));
@@ -16,6 +17,7 @@ function App() {
   return (
     <>
       <MainLayout>
+        {/* Suspense provides loading fallback while route chunks load */}
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
             <Route
