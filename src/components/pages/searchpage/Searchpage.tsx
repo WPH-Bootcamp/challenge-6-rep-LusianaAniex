@@ -39,9 +39,9 @@ const Searchpage: React.FC = () => {
    * How it works:
    * 1. User types in search input -> searchInputValue updates
    * 2. Effect clears any existing timer (cancels pending searches)
-   * 3. Sets new 500ms timer
-   * 4. If user types again before 500ms, timer resets (debounce)
-   * 5. After 500ms of no typing, search executes by updating URL
+   * 3. Sets new 300ms timer
+   * 4. If user types again before 300ms, timer resets (debounce)
+   * 5. After 300ms of no typing, search executes by updating URL
    * 6. URL change triggers useSearch hook to fetch results
    * 
    * Cleanup:
@@ -56,11 +56,11 @@ const Searchpage: React.FC = () => {
 
     // Only trigger search if there's actual input
     if (searchInputValue.trim()) {
-      // Set new timer - search will execute after 500ms of no typing
+      // Set new timer - search will execute after 300ms of no typing
       debounceTimerRef.current = setTimeout(() => {
         // Navigate with query parameter, which triggers useSearch hook
         navigate(`/search?q=${encodeURIComponent(searchInputValue.trim())}`);
-      }, 500); // 500ms debounce delay - balances responsiveness and performance
+      }, 300); // 300ms debounce delay - faster response while still efficient
     }
 
     // Cleanup function runs on unmount or when searchInputValue changes

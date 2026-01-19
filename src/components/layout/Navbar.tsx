@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Input } from '../ui/Input/Input';
 import { useNavigate, Link } from 'react-router-dom';
 
@@ -12,6 +12,7 @@ export const Navbar: React.FC<NavbarProps> = () => {
   const [searchOpen, setSearchOpen] = useState(false);
   const searchInputRef = React.useRef<HTMLInputElement>(null);
   const [searchValue, setSearchValue] = useState('');
+  const debounceTimerRef = useRef<number | null>(null);
 
   const navigate = useNavigate();
 
@@ -33,6 +34,32 @@ export const Navbar: React.FC<NavbarProps> = () => {
       searchInputRef.current.focus();
     }
   }, [searchOpen]);
+
+  /**
+   * Debounced live search effect for desktop navbar
+   * Triggers automatic search 300ms after user stops typing
+   */
+  useEffect(() => {
+    // Clear any existing debounce timer
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+    }
+
+    // Only trigger search if there's actual input
+    if (searchValue.trim()) {
+      // Set new timer - search will execute after 300ms of no typing
+      debounceTimerRef.current = setTimeout(() => {
+        navigate(`/search?q=${encodeURIComponent(searchValue.trim())}`);
+      }, 300); // 300ms debounce delay - matches search page behavior
+    }
+
+    // Cleanup function
+    return () => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+    };
+  }, [searchValue, navigate]);
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
