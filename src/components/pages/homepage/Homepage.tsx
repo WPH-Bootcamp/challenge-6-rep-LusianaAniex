@@ -3,7 +3,7 @@ import { Button } from '../../ui/Button/Button';
 import { HeroSlider } from '../../container/Hero/HeroSlider';
 import MovieCard from '../../container/MovieCard';
 import { HeroSection } from '../../container/Hero/index';
-import { useState } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { Carousel } from '../../container/Carousel';
 import { SkeletonHomepage } from '../../ui/Skeleton';
 import { useScreenSize } from '../../../hooks/useScreenSize';
@@ -23,10 +23,22 @@ export const Homepage: React.FC = () => {
   const { colCount } = useScreenSize();
   const [rowsToShow, setRowsToShow] = useState<number>(APP_CONSTANTS.DEFAULT_ROWS_TO_SHOW);
 
-  const newReleaseCardsToShow = newReleaseMovies.slice(
-    0,
-    rowsToShow * colCount
+  // Memoize computed values to prevent unnecessary recalculations
+  const newReleaseCardsToShow = useMemo(
+    () => newReleaseMovies.slice(0, rowsToShow * colCount),
+    [newReleaseMovies, rowsToShow, colCount]
   );
+
+  const trendingToShow = useMemo(
+    () => trendingMovies.slice(0, APP_CONSTANTS.MAX_TRENDING_ITEMS),
+    [trendingMovies]
+  );
+
+  // Memoize event handlers to prevent recreation on every render
+  const handleLoadMore = useCallback(() => {
+    setRowsToShow((prev) => prev + APP_CONSTANTS.ROWS_INCREMENT);
+    loadMoreMovies();
+  }, [loadMoreMovies]);
 
   if (loading) {
     return <SkeletonHomepage />;
@@ -55,7 +67,7 @@ export const Homepage: React.FC = () => {
             Trending Now
           </h2>
         </div>
-        <Carousel movies={trendingMovies.slice(0, APP_CONSTANTS.MAX_TRENDING_ITEMS)} />
+        <Carousel movies={trendingToShow} />
       </section>
 
       {/* New Release */}
@@ -75,10 +87,7 @@ export const Homepage: React.FC = () => {
                 variant='secondary'
                 size='sm'
                 className='translate-y-5 md:translate-y-10 shadow-2xl w-[200px] md:w-[230px]'
-                onClick={() => {
-                  setRowsToShow((prev) => prev + APP_CONSTANTS.ROWS_INCREMENT);
-                  loadMoreMovies();
-                }}
+                onClick={handleLoadMore}
               >
                 Load More
               </Button>

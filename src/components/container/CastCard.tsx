@@ -1,3 +1,4 @@
+import React from 'react';
 import { getImageUrl } from '../../services/movies/services';
 
 interface CastCardProps {
@@ -6,7 +7,7 @@ interface CastCardProps {
   profilePath: string | null;
 }
 
-const CastCard: React.FC<CastCardProps> = ({ name, role, profilePath }) => {
+const CastCardComponent: React.FC<CastCardProps> = ({ name, role, profilePath }) => {
   return (
     <div className='flex rounded-xl overflow-hidden w-full md:w-[360px] h-[104px]'>
       {profilePath ? (
@@ -29,5 +30,11 @@ const CastCard: React.FC<CastCardProps> = ({ name, role, profilePath }) => {
     </div>
   );
 };
+
+/**
+ * Memoize CastCard to prevent unnecessary re-renders
+ * Only re-renders when props actually change
+ */
+const CastCard = React.memo(CastCardComponent);
 
 export default CastCard;

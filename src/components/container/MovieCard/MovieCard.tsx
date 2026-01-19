@@ -4,7 +4,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { getImageUrl, getMovieDetails } from '../../../services/movies/services';
 import type { MovieCardProps } from './MovieCard.interface';
 
-export const MovieCard: React.FC<MovieCardProps> = ({
+const MovieCardComponent: React.FC<MovieCardProps> = ({
   movie,
   trendingRank = 0,
 }) => {
@@ -57,3 +57,14 @@ export const MovieCard: React.FC<MovieCardProps> = ({
     </div>
   );
 };
+
+/**
+ * Memoize MovieCard to prevent unnecessary re-renders
+ * Only re-renders when movie.id or trendingRank changes
+ */
+export const MovieCard = React.memo(MovieCardComponent, (prevProps, nextProps) => {
+  return (
+    prevProps.movie.id === nextProps.movie.id &&
+    prevProps.trendingRank === nextProps.trendingRank
+  );
+});

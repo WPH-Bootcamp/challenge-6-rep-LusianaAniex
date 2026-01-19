@@ -74,6 +74,7 @@ const LargeMovieCard: React.FC<LargeMovieCardProps> = ({
               className='bg-primary-300 hover:bg-primary-400 text-white font-semibold rounded-full px-7 py-3 flex items-center gap-2 text-base shadow-md transition-colors duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed justify-center'
               onClick={onWatchTrailer}
               disabled={!trailerAvailable}
+              aria-label={trailerAvailable ? `Watch trailer for ${title}` : 'Trailer not available'}
             >
               Watch Trailer <IoPlayCircle size={22} />
             </button>
@@ -93,6 +94,7 @@ const LargeMovieCard: React.FC<LargeMovieCardProps> = ({
           className='bg-primary-300 hover:bg-primary-400 text-white font-semibold rounded-full px-4 py-2 flex items-center gap-1 text-sm shadow-md transition-colors duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed justify-center flex-1'
           onClick={onWatchTrailer}
           disabled={!trailerAvailable}
+          aria-label={trailerAvailable ? `Watch trailer for ${title}` : 'Trailer not available'}
         >
           Watch Trailer <IoPlayCircle size={18} />
         </button>

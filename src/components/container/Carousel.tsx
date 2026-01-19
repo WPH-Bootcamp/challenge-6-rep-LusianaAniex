@@ -23,13 +23,28 @@ export const Carousel: React.FC<CarouselProps> = ({ movies }) => {
   const maxStartIdx = total <= visibleCount ? 0 : total - visibleCount;
   const safeStartIdx = Math.min(startIdx, maxStartIdx);
 
-  const goPrev = () => {
+  const goPrev = useCallback(() => {
     setStartIdx((prev) => (prev === 0 ? maxStartIdx : prev - 1));
-  };
+  }, [maxStartIdx]);
   
   const goNext = useCallback(() => {
     setStartIdx((prev) => (prev === maxStartIdx ? 0 : prev + 1));
   }, [maxStartIdx]);
+
+  /**
+   * Keyboard navigation for accessibility
+   * Arrow Left: Previous slide
+   * Arrow Right: Next slide
+   */
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      goPrev();
+    } else if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      goNext();
+    }
+  }, [goPrev, goNext]);
 
   // Auto-scroll effect
   useEffect(() => {
@@ -55,7 +70,14 @@ export const Carousel: React.FC<CarouselProps> = ({ movies }) => {
   const translateX = `-${safeStartIdx * (100 / visibleCount)}%`;
 
   return (
-    <div className='relative w-full'>
+    <div 
+      className='relative w-full' 
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
+      role="region"
+      aria-label="Trending movies carousel"
+      aria-roledescription="carousel"
+    >
       <div className='overflow-hidden w-full'>
         <div
           className={`flex gap-3 md:gap-4 transition-transform duration-500`}
@@ -68,6 +90,9 @@ export const Carousel: React.FC<CarouselProps> = ({ movies }) => {
               key={movie.id}
               className='flex-shrink-0'
               style={{ width: cardWidth }}
+              role="group"
+              aria-roledescription="slide"
+              aria-label={`${idx + 1} of ${total}`}
             >
               <MovieCard movie={movie} trendingRank={idx + 1} />
             </div>

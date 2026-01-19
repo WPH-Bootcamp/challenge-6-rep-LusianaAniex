@@ -8,6 +8,7 @@ export const Button: React.FC<ButtonProps> = ({
   children,
   icon,
   disabled,
+  ariaLabel,
   ...props
 }) => {
   const sizeClasses = {
@@ -53,6 +54,7 @@ export const Button: React.FC<ButtonProps> = ({
         ${className}
       `}
       disabled={disabled}
+      aria-label={ariaLabel || props['aria-label']}
       {...props}
     >
       {icon && (

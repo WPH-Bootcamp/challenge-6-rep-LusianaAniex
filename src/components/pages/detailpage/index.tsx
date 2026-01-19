@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useDetail } from './useDetail';
 import { getImageUrl } from '../../../services/movies/services';
 import Button from '../../ui/Button';
@@ -24,18 +24,27 @@ const MovieDetailpage: React.FC = () => {
     return <div className='text-center py-20 text-red-500'>{error}</div>;
   if (!movie) return <div className='text-center py-20'>Movie not found.</div>;
 
-  const genreNames = getGenreNames(movie, genres);
+  // Memoize computed values to prevent recalculation on every render
+  const genreNames = useMemo(
+    () => getGenreNames(movie, genres),
+    [movie, genres]
+  );
 
-  const handleWatchTrailer = () => {
+  // Memoize event handlers to prevent recreation on every render
+  const handleWatchTrailer = useCallback(() => {
     if (trailerKey) setIsModalOpen(true);
-  };
-  const handleFavoriteClick = (favoriteMovie: typeof movie) => {
-    const wasFavorite = isMovieFavorite(favoriteMovie.id);
-    toggleFavorite(favoriteMovie);
-    toast(
-      `${favoriteMovie.title} ${wasFavorite ? 'removed from' : 'added to'} favorites`
-    );
-  };
+  }, [trailerKey]);
+
+  const handleFavoriteClick = useCallback(
+    (favoriteMovie: typeof movie) => {
+      const wasFavorite = isMovieFavorite(favoriteMovie.id);
+      toggleFavorite(favoriteMovie);
+      toast(
+        `${favoriteMovie.title} ${wasFavorite ? 'removed from' : 'added to'} favorites`
+      );
+    },
+    [isMovieFavorite, toggleFavorite]
+  );
   return (
     <div className='min-h-screen bg-base-black text-white flex flex-col'>
       <AppToaster />
@@ -91,6 +100,7 @@ const MovieDetailpage: React.FC = () => {
                   disabled={!trailerKey}
                   className='rounded-full p-2 text-base font-semibold bg-primary-300 hover:bg-primary-400 border-none !h-11 lg:h-13  w-full! md:w-55! shadow-lg'
                   style={{ minWidth: 0 }}
+                  aria-label={trailerKey ? 'Watch movie trailer' : 'Trailer not available'}
                 >
                   Watch Trailer <IoPlayCircle size={24} />
                 </Button>

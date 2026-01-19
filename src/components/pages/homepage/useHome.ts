@@ -1,4 +1,5 @@
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { useCallback } from 'react';
 import {
   getTrendingMovies,
   getNewReleaseMovies,
@@ -27,9 +28,10 @@ export const useHome = () => {
     initialPageParam: 1,
   });
 
-  const loadMoreMovies = () => {
+  // Memoize loadMoreMovies to prevent recreation on every render
+  const loadMoreMovies = useCallback(() => {
     newReleaseQuery.fetchNextPage();
-  };
+  }, [newReleaseQuery]);
 
   return {
     trendingMovies: trendingQuery.data?.results || [],

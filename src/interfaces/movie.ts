@@ -32,11 +32,51 @@ export interface ApiResponse {
   page: number;
 }
 
+// Credits interfaces
+export interface CastMember {
+  id: number;
+  name: string;
+  character: string;
+  profile_path: string | null;
+  order?: number;
+}
+
+export interface CrewMember {
+  id: number;
+  name: string;
+  job: string;
+  department?: string;
+  profile_path: string | null;
+}
+
+export interface CreditsResponse {
+  id: number;
+  cast: CastMember[];
+  crew: CrewMember[];
+}
+
+// Images interfaces
+export interface ImageData {
+  file_path: string;
+  width: number;
+  height: number;
+  aspect_ratio: number;
+  vote_average: number;
+  vote_count: number;
+}
+
+export interface ImagesResponse {
+  id: number;
+  backdrops: ImageData[];
+  posters: ImageData[];
+  logos?: ImageData[];
+}
+
 export interface MovieDetailData {
   movie: MovieDetails | null;
   trailerKey: string | null;
-  credits: unknown;
-  images: unknown;
+  credits: CreditsResponse;
+  images: ImagesResponse | null;
   isLoading: boolean;
   error: string | null;
 }

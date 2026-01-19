@@ -162,7 +162,7 @@ const Searchpage: React.FC = () => {
         </form>
       </div>
 
-      <div className='mx-auto p-4 md:p-8 pt-20 md:mt-20 flex flex-col items-center justify-center min-h-[80vh]'>
+      <div className='mx-auto p-4 md:p-8 pt-24 md:mt-20 flex flex-col items-center justify-center min-h-[80vh]'>
       {loading && (
         <div className='w-full max-w-4xl'>
           {[...Array(3)].map((_, i) => (
