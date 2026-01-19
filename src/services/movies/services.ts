@@ -33,27 +33,10 @@ export const searchMovies = (
 
 const FALLBACK_IMAGE = 'https://via.placeholder.com/180x270?text=No+Poster';
 
-// Detect WebP support (cached result)
-let webpSupported: boolean | null = null;
-const checkWebPSupport = (): boolean => {
-  if (webpSupported !== null) return webpSupported;
-  
-  // Check if browser supports WebP
-  const canvas = document.createElement('canvas');
-  if (canvas.getContext && canvas.getContext('2d')) {
-    webpSupported = canvas.toDataURL('image/webp').indexOf('data:image/webp') === 0;
-  } else {
-    webpSupported = false;
-  }
-  return webpSupported;
-};
-
 /**
  * Get optimized image URL from TMDB
  * 
  * Features:
- * - WebP format for modern browsers (30% smaller)
- * - JPEG fallback for older browsers
  * - Configurable size
  * - Fallback placeholder
  */
@@ -64,10 +47,6 @@ export const getImageUrl = (
   if (!path) return FALLBACK_IMAGE;
   
   const baseUrl = TMDB_ENDPOINTS.IMAGES.BASE_URL;
-  // WebP detection is available via checkWebPSupport() for future use
-  
-  // For WebP support, we'd need TMDB to support it
-  // Currently TMDB returns JPEG, but this structure prepares for future WebP support
   return `${baseUrl}${size}${path}`;
 };
 
