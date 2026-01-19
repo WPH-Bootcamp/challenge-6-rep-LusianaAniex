@@ -19,14 +19,10 @@ const MovieDetailpage: React.FC = () => {
   const { loading, error, movie, trailerKey, cast, crew, genres } = useDetail();
   const { isFavorite: isMovieFavorite, toggleFavorite } = useFavorite();
 
-  if (loading) return <SkeletonDetail />;
-  if (error)
-    return <div className='text-center py-20 text-red-500'>{error}</div>;
-  if (!movie) return <div className='text-center py-20'>Movie not found.</div>;
-
   // Memoize computed values to prevent recalculation on every render
+  // Use optional chaining to handle null/undefined safely
   const genreNames = useMemo(
-    () => getGenreNames(movie, genres),
+    () => (movie && genres ? getGenreNames(movie, genres) : []),
     [movie, genres]
   );
 
@@ -37,6 +33,7 @@ const MovieDetailpage: React.FC = () => {
 
   const handleFavoriteClick = useCallback(
     (favoriteMovie: typeof movie) => {
+      if (!favoriteMovie) return;
       const wasFavorite = isMovieFavorite(favoriteMovie.id);
       toggleFavorite(favoriteMovie);
       toast(
@@ -45,6 +42,12 @@ const MovieDetailpage: React.FC = () => {
     },
     [isMovieFavorite, toggleFavorite]
   );
+
+  // Early returns AFTER all hooks
+  if (loading) return <SkeletonDetail />;
+  if (error)
+    return <div className='text-center py-20 text-red-500'>{error}</div>;
+  if (!movie) return <div className='text-center py-20'>Movie not found.</div>;
   return (
     <div className='min-h-screen bg-base-black text-white flex flex-col'>
       <AppToaster />
