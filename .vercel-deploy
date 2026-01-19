@@ -1,0 +1,4 @@
+# Vercel Deployment Fix
+
+This file triggers a fresh deployment.
+Build fix applied - removed unused `checkWebPSupport` function.
