@@ -51,7 +51,7 @@ const MovieDetailpage: React.FC = () => {
       </div>
 
       {/* Main Content */}
-      <div className=' -mt-40 z-10 relative px-4 sm:px-15 lg:px-25 xl:px-35 pb-12'>
+      <div className=' -mt-45 z-10 relative px-4 sm:px-15 lg:px-25 xl:px-35 pb-12'>
         <div className='grid grid-cols-[120px_1fr] md:grid-cols-3 gap-4'>
           {/* Poster */}
           <div className='row-span-2 md:col-span-1'>
@@ -89,7 +89,7 @@ const MovieDetailpage: React.FC = () => {
                   variant='primary'
                   onClick={handleWatchTrailer}
                   disabled={!trailerKey}
-                  className='rounded-full p-2 text-base font-semibold bg-primary-300 hover:bg-primary-400 border-none w-full! md:w-55! shadow-lg'
+                  className='rounded-full p-2 text-base font-semibold bg-primary-300 hover:bg-primary-400 border-none !h-11 lg:h-13  w-full! md:w-55! shadow-lg'
                   style={{ minWidth: 0 }}
                 >
                   Watch Trailer <IoPlayCircle size={24} />
@@ -104,37 +104,37 @@ const MovieDetailpage: React.FC = () => {
             </div>
 
             {/* Cards */}
-            <div className='grid grid-cols-3 gap-4 mb-8'>
-              <div className='bg-black/80 border border-neutral-700 rounded-2xl p-6 flex flex-col items-center shadow-md'>
+            <div className='grid grid-cols-3 gap-3 md:gap-4 mb-8'>
+              <div className='bg-neutral-900/95 rounded-2xl p-3 md:p-6 flex flex-col items-center'>
                 <img
                   src='/icon-rating.svg'
                   alt='rating'
-                  className='w-8 h-8 mb-2'
+                  className='w-6 h-6 md:w-8 md:h-8 mb-2 mt-1 lg:mt-2'
                 />
-                <div className='text-neutral-300 text-base'>Rating</div>
-                <div className='text-xl font-semibold mt-1 text-center'>
+                <div className='text-neutral-400 text-xs md:text-base'>Rating</div>
+                <div className='text-lg md:text-xl font-semibold mt-2 md:mt-4 text-center'>
                   {movie.vote_average.toFixed(1)}/10
                 </div>
               </div>
-              <div className='bg-black/80 border border-neutral-700 rounded-2xl p-6 flex flex-col items-center shadow-md'>
+              <div className='bg-neutral-900/95 rounded-2xl p-3 md:p-6 flex flex-col items-center'>
                 <img
                   src='/icon-genre.svg'
                   alt='genre'
-                  className='w-8 h-8 mb-2'
+                  className='w-6 h-6 md:w-8 md:h-8 mb-2 mt-1 lg:mt-2'
                 />
-                <div className='text-neutral-300 text-base '>Genre</div>
-                <div className='text-xl font-semibold mt-1 text-center'>
+                <div className='text-neutral-400 text-xs md:text-base'>Genre</div>
+                <div className='text-lg md:text-xl font-semibold mt-2 md:mt-4 text-center'>
                   {genreNames[0]}
                 </div>
               </div>
-              <div className='bg-black/80 border border-neutral-700 rounded-2xl p-6 flex flex-col items-center shadow-md'>
+              <div className='bg-neutral-900/95 rounded-2xl p-3 md:p-6 flex flex-col items-center'>
                 <img
                   src='/icon-age-limit.svg'
                   alt='age limit'
-                  className='w-8 h-8 mb-2'
+                  className='w-6 h-6 md:w-8 md:h-8 mb-2 mt-1 lg:mt-2 '
                 />
-                <div className='text-neutral-300 text-base'>Age Limit</div>
-                <div className='text-xl font-semibold mt-1 text-center'>
+                <div className='text-neutral-400 text-xs md:text-base'>Age Limit</div>
+                <div className='text-lg md:text-xl font-semibold mt-2 md:mt-4 text-center'>
                   {APP_CONSTANTS.DEFAULT_AGE_LIMIT}
                 </div>
               </div>
@@ -143,17 +143,17 @@ const MovieDetailpage: React.FC = () => {
         </div>
 
         {/* Overview Section */}
-        <div className='mt-8'>
-          <h2 className='text-2xl md:text-3xl font-bold mb-4'>Overview</h2>
-          <p className='text-neutral-200 text-base leading-relaxed'>
+        <div className='mt-6 lg:mt-8'>
+          <h2 className='text-xl lg:text-display-md font-bold mb-2'>Overview</h2>
+          <p className='text-neutral-400 text-sm lg:text-base leading-relaxed'>
             {movie.overview}
           </p>
         </div>
 
         {/* Cast & Crew */}
-        <div className='mt-12'>
-          <h2 className='text-2xl md:text-3xl font-bold mb-6'>Cast & Crew</h2>
-          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+        <div className='mt-6 lg:mt-8'>
+          <h2 className='text-xl lg:text-display-md font-bold mb-4 lg:mb-6'>Cast & Crew</h2>
+          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-10'>
             {cast.map((member, index) => (
               <CastCard
                 key={`cast-${member.id}-${member.character}-${index}`}

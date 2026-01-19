@@ -64,7 +64,7 @@ export const Homepage: React.FC = () => {
           <h2 className='text-display-xs md:text-display-lg font-bold mb-4 md:mb-6 pb-2'>
             New Release
           </h2>
-          <div className='grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4'>
+          <div className='grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-4 md:gap-x-5 gap-y-8 md:gap-y-10'>
             {newReleaseCardsToShow.map((movie) => (
               <MovieCard key={`new-${movie.id}`} movie={movie} />
             ))}
